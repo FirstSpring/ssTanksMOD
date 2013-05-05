@@ -522,13 +522,13 @@ public class EntityHook extends Entity implements IProjectile
 		y = (int)(this.posY - this.shootingEntity.posY);
 		z = (int)(this.posZ - this.shootingEntity.posZ);
 
-		if(Math.abs(x)>2)
+		if(Math.abs(x)>1)
 			x = (int) (Math.signum(x));
 		else x = 0;
-		if(Math.abs(y)>2)
+		if(Math.abs(y)>1)
 			y = (int) (Math.signum(y));
 		else y = 0;
-		if(Math.abs(z)>2)
+		if(Math.abs(z)>1)
 			z = (int) (Math.signum(z));
 		else z = 0;
 	}

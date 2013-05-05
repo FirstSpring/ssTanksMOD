@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
@@ -71,7 +72,7 @@ public class RenderHook extends Render
 
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
-
+		
 		if (mc.thePlayer != null&&mc.thePlayer.username.equals(EntityHook.get名前()))
 		{
 			float f91 = mc.thePlayer.getSwingProgress(par9);
@@ -104,6 +105,57 @@ public class RenderHook extends Render
 			double d12 = (double)((float)(d3 - d9));
 			double d13 = (double)((float)(d4 - d10));
 			double d14 = (double)((float)(d5 - d11));
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			GL11.glColor3f(255, 0, 0);
+			tessellator.startDrawing(3);
+			tessellator.setColorOpaque_I(0);
+			int b2 = 250;
+
+			for (int i = 0; i <= b2; ++i)
+			{
+				float f12 = (float)i / (float)b2;
+				tessellator.addVertex(par2 + d12 * (double)f12, par4 + d13 * (double)(f12 * f12 + f12) * 0.5D + 0.25D, par6 + d14 * (double)f12);
+			}
+
+			tessellator.draw();
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+		}
+		else if(clientproxy.mc.theWorld.getPlayerEntityByName(EntityHook.get名前()) != null)
+		{
+			EntityPlayer e = clientproxy.mc.theWorld.getPlayerEntityByName(EntityHook.get名前());
+			float f91 = e.getSwingProgress(par9);
+			float f101 = MathHelper.sin(MathHelper.sqrt_float(f91) * (float)Math.PI);
+			Vec3 vec3 = EntityHook.worldObj.getWorldVec3Pool().getVecFromPool(-0.5D, 0.03D, 0.8D);
+			vec3.rotateAroundX(-(e.prevRotationPitch + (e.rotationPitch - e.prevRotationPitch) * par9) * (float)Math.PI / 180.0F);
+			vec3.rotateAroundY(-(e.prevRotationYaw + (e.rotationYaw - e.prevRotationYaw) * par9) * (float)Math.PI / 180.0F);
+			vec3.rotateAroundY(f101 * 0.5F);
+			vec3.rotateAroundX(-f101 * 0.7F);
+			double d0 = -Math.cos(((double)e.rotationYaw+90) * Math.PI / 180.0D) * 0.4D;
+            double d1 = -Math.sin(((double)e.rotationYaw+90) * Math.PI / 180.0D) * 0.4D;
+			double d3 = e.posX+d0;//e.prevPosX + (e.posX - e.prevPosX) * (double)par9 + vec3.xCoord;
+			double d4 = e.posY-0.6F;// e.prevPosY + (e.posY - e.prevPosY) * (double)par9 + vec3.yCoord;
+			double d5 = e.posZ+d1;// e.prevPosZ + (e.posZ - e.prevPosZ) * (double)par9 + vec3.zCoord;
+			double d6 = e != Minecraft.getMinecraft().thePlayer ? (double)e.getEyeHeight() : 0.0D;
+
+			if (this.renderManager.options.thirdPersonView > 0 || e != Minecraft.getMinecraft().thePlayer)
+			{
+				float f111 = (e.prevRenderYawOffset + (e.renderYawOffset - e.prevRenderYawOffset) * par9) * (float)Math.PI / 180.0F;
+				double d7 = (double)MathHelper.sin(f111);
+				double d8 = (double)MathHelper.cos(f111);
+				d3 = e.posX+d0;//e.prevPosX + (e.posX - e.prevPosX) * (double)par9 + vec3.xCoord;
+				d4 = e.posY-0.6F;// e.prevPosY + (e.posY - e.prevPosY) * (double)par9 + vec3.yCoord;
+				d5 = e.posZ+d1;// e.prevPosZ + (e.posZ - e.prevPosZ) * (double)par9 + vec3.zCoord;
+			}
+
+			double d9 = EntityHook.prevPosX + (EntityHook.posX - EntityHook.prevPosX) * (double)par9;
+			double d10 = EntityHook.prevPosY + (EntityHook.posY - EntityHook.prevPosY) * (double)par9 + 0.25D;
+			double d11 = EntityHook.prevPosZ + (EntityHook.posZ - EntityHook.prevPosZ) * (double)par9;
+			double d12 = (double)((float)(d3 - d9));
+			double d13 = (double)((float)(d4 - d10));
+			double d14 = (double)((float)(d5 - d11));
+			d13+=+1.5F;
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glColor3f(255, 0, 0);
