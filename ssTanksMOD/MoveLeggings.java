@@ -95,7 +95,7 @@ public class MoveLeggings extends ItemArmor
 						this.LeftHook.remove(player);
 					}
 
-					EntityHook LeftHook = new EntityHook(player.worldObj,player,6.0F,-10.0F);
+					EntityHook LeftHook = new EntityHook(player.worldObj,player,6.0F,-15.0F);
 					this.LeftHook.put(player,LeftHook);
 					player.worldObj.spawnEntityInWorld(LeftHook);
 
@@ -106,7 +106,7 @@ public class MoveLeggings extends ItemArmor
 						this.RightHook.remove(player);
 					}
 
-					EntityHook RightHook = new EntityHook(player.worldObj,player,6.0F,10.0F);
+					EntityHook RightHook = new EntityHook(player.worldObj,player,6.0F,15.0F);
 					this.RightHook.put(player,RightHook);
 					player.worldObj.spawnEntityInWorld(RightHook);
 

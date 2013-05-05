@@ -17,8 +17,6 @@ public class clienttickhandler implements ITickHandler
 {
 	Minecraft mc = FMLClientHandler.instance().getClient();
 
-	int t = 0;
-
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
@@ -65,11 +63,8 @@ public class clienttickhandler implements ITickHandler
 			if(Mouse.isButtonDown(2))
 				keys[12] = 1;
 			else keys[12] = 0;
-			if(t == 0){
-				PacketDispatcher.sendPacketToServer(new Packet250CustomPayload("ssKeyCh",keys));
-				t = 3;
-			}
-			else t--;
+			
+			PacketDispatcher.sendPacketToServer(new Packet250CustomPayload("ssKeyCh",keys));
 
 		}
 	}
