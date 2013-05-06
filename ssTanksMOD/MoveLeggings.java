@@ -145,7 +145,18 @@ public class MoveLeggings extends ItemArmor
 
 		float[] xyz = {0,0,0};
 		boolean 落ちない = false;
-
+		if(ssTanksMOD.インスタンス.入力状態.containsKey(player.username))
+		{
+			if(ssTanksMOD.インスタンス.入力状態.get(player.username)[4] == 1)
+			{
+				xyz[1] = 0.2F;
+			}
+			if(ssTanksMOD.インスタンス.入力状態.get(player.username)[5] == 1)
+			{
+				xyz[1] = -0.2F;
+			}
+		}
+		
 		if(this.LeftHook.containsKey(player))
 		{
 			EntityHook LeftHook = this.LeftHook.get(player);

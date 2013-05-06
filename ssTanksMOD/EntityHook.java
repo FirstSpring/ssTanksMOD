@@ -298,7 +298,7 @@ public class EntityHook extends Entity implements IProjectile
 
 			if (movingobjectposition != null)
 			{
-				if (movingobjectposition.entityHit != null&&!this.worldObj.isRemote)
+				if (movingobjectposition.entityHit != null&&!this.worldObj.isRemote&&!(movingobjectposition.entityHit == this.shootingEntity))
 				{
 					this.bobber = movingobjectposition.entityHit;
 					this.inEntity = true;
