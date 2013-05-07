@@ -26,7 +26,7 @@ public class EntityHook extends Entity implements IProjectile
 	private float x = 0;
 	private float y = 0;
 	private float z = 0;
-	
+
 	public Entity bobber;
 
 	public boolean inEntity;
@@ -143,6 +143,10 @@ public class EntityHook extends Entity implements IProjectile
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
 	{
+		if(!this.inGround){
+			this.setPosition(par1, par3, par5);
+			this.setRotation(par7, par8);
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -180,7 +184,7 @@ public class EntityHook extends Entity implements IProjectile
 			this.setDead();
 			return;
 		}
-		
+
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
 		{
 			float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -205,7 +209,7 @@ public class EntityHook extends Entity implements IProjectile
 		{
 			--this.arrowShake;
 		}
-		
+
 		if (this.bobber != null)
 		{
 			if (!this.bobber.isDead)
@@ -221,7 +225,7 @@ public class EntityHook extends Entity implements IProjectile
 				return;
 			}
 		}
-		
+
 		if (this.inGround||this.inEntity)
 		{
 			if(!this.worldObj.isRemote&&this.shootingEntity != null)
@@ -229,11 +233,11 @@ public class EntityHook extends Entity implements IProjectile
 				座標設定();
 			}
 		}
-		
+
 		if (this.inGround)
 		{
 			this.setPosition(this.posX, this.posY, this.posZ);
-			
+
 			int j = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 			int k = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 
@@ -393,22 +397,12 @@ public class EntityHook extends Entity implements IProjectile
 				}
 				f4 = 0.8F;
 			}
-			
+
 
 			this.motionX *= (double)f4;
 			this.motionZ *= (double)f4;
 			this.motionY -= (double)f1;
-			
-			if (this.bobber != null)
-			{
-				if (!this.bobber.isDead)
-				{
-					this.posX = this.bobber.posX;
-					this.posY = this.bobber.boundingBox.minY + (double)this.bobber.height * 0.8D;
-					this.posZ = this.bobber.posZ;
-				}
-			}
-			
+
 			this.setPosition(this.posX, this.posY, this.posZ);
 			this.doBlockCollisions();
 		}
