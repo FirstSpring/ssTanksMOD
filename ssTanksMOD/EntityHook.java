@@ -35,10 +35,6 @@ public class EntityHook extends Entity implements IProjectile
 
 	public boolean inGround = false;
 
-	/** 1 if the player can pick up the arrow */
-	public int canBePickedUp = 0;
-
-	/** Seems to be some sort of timer for animating an arrow. */
 	public int arrowShake = 0;
 
 	/** The owner of this arrow. */
@@ -47,7 +43,6 @@ public class EntityHook extends Entity implements IProjectile
 	private int ticksInAir = 0;
 	private double damage = 2.0D;
 
-	/** The amount of knockback an arrow applies when it hits a mob. */
 	private int knockbackStrength;
 
 	public EntityHook(World par1World)
@@ -78,11 +73,6 @@ public class EntityHook extends Entity implements IProjectile
 		this.renderDistanceWeight = 10.0D;
 		this.shootingEntity = par2EntityLiving;
 
-		if (par2EntityLiving instanceof EntityPlayer)
-		{
-			this.canBePickedUp = 1;
-		}
-
 		this.setSize(0.5F, 0.5F);
 		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
 		this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
@@ -100,11 +90,6 @@ public class EntityHook extends Entity implements IProjectile
 	{
 		super(par1World);
 		this.shootingEntity = par2EntityLiving;
-
-		if (par2EntityLiving instanceof EntityPlayer)
-		{
-			this.canBePickedUp = 1;
-		}
 
 		this.setSize(0.5F, 0.5F);
 		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw+ry, par2EntityLiving.rotationPitch);
@@ -143,10 +128,10 @@ public class EntityHook extends Entity implements IProjectile
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
 	{
-		if(!this.inGround){
-			this.setPosition(par1, par3, par5);
-			this.setRotation(par7, par8);
-		}
+		if(clientproxy.mc.theWorld.getPlayerEntityByName(this.get名前()) != null)
+			clientproxy.mc.theWorld.getPlayerEntityByName(this.get名前()).sendChatToPlayer("位置");
+		this.setPosition(par1, par3, par5);
+		this.setRotation(par7, par8);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -226,7 +211,7 @@ public class EntityHook extends Entity implements IProjectile
 			}
 		}
 
-		if (this.inGround||this.inEntity)
+		if (this.inGround)
 		{
 			if(!this.worldObj.isRemote&&this.shootingEntity != null)
 			{
@@ -398,7 +383,6 @@ public class EntityHook extends Entity implements IProjectile
 				f4 = 0.8F;
 			}
 
-
 			this.motionX *= (double)f4;
 			this.motionZ *= (double)f4;
 			this.motionY -= (double)f1;
@@ -420,7 +404,6 @@ public class EntityHook extends Entity implements IProjectile
 		par1NBTTagCompound.setByte("inData", (byte)this.inData);
 		par1NBTTagCompound.setByte("shake", (byte)this.arrowShake);
 		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
-		par1NBTTagCompound.setByte("pickup", (byte)this.canBePickedUp);
 		par1NBTTagCompound.setDouble("damage", this.damage);
 	}
 
@@ -441,21 +424,8 @@ public class EntityHook extends Entity implements IProjectile
 		{
 			this.damage = par1NBTTagCompound.getDouble("damage");
 		}
-
-		if (par1NBTTagCompound.hasKey("pickup"))
-		{
-			this.canBePickedUp = par1NBTTagCompound.getByte("pickup");
-		}
-		else if (par1NBTTagCompound.hasKey("player"))
-		{
-			this.canBePickedUp = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
-		}
 	}
-
-	/**
-	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-	 * prevent them from trampling crops
-	 */
+	
 	protected boolean canTriggerWalking()
 	{
 		return false;
@@ -476,26 +446,17 @@ public class EntityHook extends Entity implements IProjectile
 	{
 		return this.damage;
 	}
-
-	/**
-	 * Sets the amount of knockback the arrow applies when it hits a mob.
-	 */
+	
 	public void setKnockbackStrength(int par1)
 	{
 		this.knockbackStrength = par1;
 	}
 
-	/**
-	 * If returns false, the item will not inflict any damage against entities.
-	 */
 	public boolean canAttackWithItem()
 	{
 		return false;
 	}
 
-	/**
-	 * Whether the arrow has a stream of critical hit particles flying behind it.
-	 */
 	public void setIsCritical(boolean par1)
 	{
 		byte b0 = this.dataWatcher.getWatchableObjectByte(16);
@@ -510,9 +471,6 @@ public class EntityHook extends Entity implements IProjectile
 		}
 	}
 
-	/**
-	 * Whether the arrow has a stream of critical hit particles flying behind it.
-	 */
 	public boolean getIsCritical()
 	{
 		byte b0 = this.dataWatcher.getWatchableObjectByte(16);

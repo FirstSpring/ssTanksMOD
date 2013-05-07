@@ -64,7 +64,7 @@ public class ssTanksMOD {
 	public void Init(FMLInitializationEvent event) {
 
 		EntityRegistry.registerGlobalEntityID(EntityHook.class, "EntityHook", this.EntityHookID);
-		EntityRegistry.registerModEntity(EntityHook.class, "EntityHook", 0, this, 250, 3,true);
+		EntityRegistry.registerModEntity(EntityHook.class, "EntityHook", 0, this, 250, 1,true);
 
 		this.moveleg = new MoveLeggings(this.movelegID,EnumArmorMaterial.DIAMOND,2,2).setUnlocalizedName("sshookshot:moveleg");
 		LanguageRegistry.addName(moveleg, "hookshot");
