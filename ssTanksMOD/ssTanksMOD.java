@@ -64,16 +64,25 @@ public class ssTanksMOD {
 	public void Init(FMLInitializationEvent event) {
 
 		EntityRegistry.registerGlobalEntityID(EntityHook.class, "EntityHook", this.EntityHookID);
-		EntityRegistry.registerModEntity(EntityHook.class, "EntityHook", 0, this, 250, 1,true);
+		EntityRegistry.registerModEntity(EntityHook.class, "EntityHook", 0, this, 250, 3,true);
 
-		this.moveleg = new MoveLeggings(this.movelegID,EnumArmorMaterial.DIAMOND,2,2).setUnlocalizedName("leggingsDiamond");
+		this.moveleg = new MoveLeggings(this.movelegID,EnumArmorMaterial.DIAMOND,2,2).setUnlocalizedName("sshookshot:moveleg");
 		LanguageRegistry.addName(moveleg, "hookshot");
 		LanguageRegistry.instance().addNameForObject(moveleg, "ja_JP", "フックショットもどき");
 		
 		GameRegistry.addRecipe(
 				new ItemStack(moveleg, 1), 
-                new Object[]{ " X ","XXX","X X",
-                Character.valueOf('X'),Block.wood});
+                new Object[]{ 
+					"AIA",
+					"FDF",
+					"BSB",
+                'I',Item.ingotIron,
+                'D',Item.legsDiamond,
+                'F',Item.fishingRod,
+                'A',Item.arrow,
+                'B',Item.bow,
+                'S',Block.lever
+                });
 		
 		プロキシ.登録();
 	}

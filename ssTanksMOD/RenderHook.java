@@ -24,7 +24,7 @@ public class RenderHook extends Render
 	{
 		this.loadTexture("/item/arrows.png");
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float)par2, (float)par4, (float)par6);
+		GL11.glTranslatef((float)par2, (float)par4+0.15F, (float)par6);
 		GL11.glRotatef(EntityHook.prevRotationYaw + (EntityHook.rotationYaw - EntityHook.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(EntityHook.prevRotationPitch + (EntityHook.rotationPitch - EntityHook.prevRotationPitch) * par9, 0.0F, 0.0F, 1.0F);
 		Tessellator tessellator = Tessellator.instance;
@@ -107,7 +107,7 @@ public class RenderHook extends Render
 			double d14 = (double)((float)(d5 - d11));
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glColor3f(255, 0, 0);
+			GL11.glColor3f(0, 0, 0);
 			tessellator.startDrawing(3);
 			tessellator.setColorOpaque_I(0);
 			int b2 = 250;

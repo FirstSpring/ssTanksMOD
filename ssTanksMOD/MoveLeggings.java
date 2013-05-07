@@ -120,7 +120,7 @@ public class MoveLeggings extends ItemArmor
 						this.LeftHook.remove(player);
 					}
 
-					EntityHook LeftHook = new EntityHook(player.worldObj,player,6.0F);
+					EntityHook LeftHook = new EntityHook(player.worldObj,player,6.0F,0);
 					this.LeftHook.put(player,LeftHook);
 					player.worldObj.spawnEntityInWorld(LeftHook);
 				}
@@ -133,7 +133,7 @@ public class MoveLeggings extends ItemArmor
 						this.RightHook.remove(player);
 					}
 
-					EntityHook RightHook = new EntityHook(player.worldObj,player,6.0F);
+					EntityHook RightHook = new EntityHook(player.worldObj,player,6.0F,0);
 					this.RightHook.put(player,RightHook);
 					player.worldObj.spawnEntityInWorld(RightHook);
 				}
@@ -145,18 +145,7 @@ public class MoveLeggings extends ItemArmor
 
 		float[] xyz = {0,0,0};
 		boolean 落ちない = false;
-		if(ssTanksMOD.インスタンス.入力状態.containsKey(player.username))
-		{
-			if(ssTanksMOD.インスタンス.入力状態.get(player.username)[4] == 1)
-			{
-				xyz[1] = 0.2F;
-			}
-			if(ssTanksMOD.インスタンス.入力状態.get(player.username)[5] == 1)
-			{
-				xyz[1] = -0.2F;
-			}
-		}
-		
+
 		if(this.LeftHook.containsKey(player))
 		{
 			EntityHook LeftHook = this.LeftHook.get(player);
@@ -164,7 +153,7 @@ public class MoveLeggings extends ItemArmor
 			xyz[0] += lxyz[0];
 			xyz[1] += lxyz[1];
 			xyz[2] += lxyz[2];
-			落ちない = true;
+			落ちない = LeftHook.inEntity||LeftHook.inGround;
 		}
 
 		if(this.RightHook.containsKey(player))
@@ -174,7 +163,15 @@ public class MoveLeggings extends ItemArmor
 			xyz[0] += rxyz[0];
 			xyz[1] += rxyz[1];
 			xyz[2] += rxyz[2];
-			落ちない = true;
+			落ちない = RightHook.inEntity||RightHook.inGround;
+		}
+		
+		if(ssTanksMOD.インスタンス.入力状態.containsKey(player.username)&&落ちない)
+		{
+			if(ssTanksMOD.インスタンス.入力状態.get(player.username)[4] == 1)
+			{
+				xyz[1] = 0.2F;
+			}
 		}
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(25);

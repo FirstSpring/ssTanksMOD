@@ -29,11 +29,11 @@ public class EntityHook extends Entity implements IProjectile
 	
 	public Entity bobber;
 
-	private boolean inEntity;
+	public boolean inEntity;
 
 	private boolean 初回アップデート = true;
 
-	private boolean inGround = false;
+	public boolean inGround = false;
 
 	/** 1 if the player can pick up the arrow */
 	public int canBePickedUp = 0;
@@ -143,8 +143,6 @@ public class EntityHook extends Entity implements IProjectile
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
 	{
-		this.setPosition(par1, par3, par5);
-		this.setRotation(par7, par8);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -207,7 +205,23 @@ public class EntityHook extends Entity implements IProjectile
 		{
 			--this.arrowShake;
 		}
-
+		
+		if (this.bobber != null)
+		{
+			if (!this.bobber.isDead)
+			{
+				this.posX = this.bobber.posX;
+				this.posY = this.bobber.boundingBox.minY + (double)this.bobber.height * 0.8D;
+				this.posZ = this.bobber.posZ;
+				this.setPosition(this.posX, this.posY, this.posZ);
+				if(!this.worldObj.isRemote&&this.shootingEntity != null)
+				{
+					座標設定();
+				}
+				return;
+			}
+		}
+		
 		if (this.inGround||this.inEntity)
 		{
 			if(!this.worldObj.isRemote&&this.shootingEntity != null)
@@ -215,9 +229,11 @@ public class EntityHook extends Entity implements IProjectile
 				座標設定();
 			}
 		}
-
+		
 		if (this.inGround)
 		{
+			this.setPosition(this.posX, this.posY, this.posZ);
+			
 			int j = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 			int k = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 
@@ -298,7 +314,7 @@ public class EntityHook extends Entity implements IProjectile
 
 			if (movingobjectposition != null)
 			{
-				if (movingobjectposition.entityHit != null&&!this.worldObj.isRemote&&!(movingobjectposition.entityHit == this.shootingEntity))
+				if (movingobjectposition.entityHit != null&&!this.worldObj.isRemote&&movingobjectposition.entityHit != this.shootingEntity)
 				{
 					this.bobber = movingobjectposition.entityHit;
 					this.inEntity = true;
@@ -375,7 +391,6 @@ public class EntityHook extends Entity implements IProjectile
 					f3 = 0.25F;
 					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)f3, this.posY - this.motionY * (double)f3, this.posZ - this.motionZ * (double)f3, this.motionX, this.motionY, this.motionZ);
 				}
-
 				f4 = 0.8F;
 			}
 			
@@ -392,7 +407,6 @@ public class EntityHook extends Entity implements IProjectile
 					this.posY = this.bobber.boundingBox.minY + (double)this.bobber.height * 0.8D;
 					this.posZ = this.bobber.posZ;
 				}
-				this.bobber = null;
 			}
 			
 			this.setPosition(this.posX, this.posY, this.posZ);
